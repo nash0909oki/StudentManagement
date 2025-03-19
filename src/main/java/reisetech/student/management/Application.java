@@ -8,25 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
 public class Application {
 
-    @Autowired
-    private StudentRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-    @GetMapping("/studentList")
-    public List<Student> getStudentList() {
-        return repository.searchStudent();
-    }
-
-    @GetMapping("/studentCourseList")
-    public List<StudentCourses> getStudentCourseList() {
-        return repository.searchCourse();
-    }
 }
 
 
