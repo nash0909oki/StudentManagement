@@ -1,7 +1,6 @@
-package reisetech.student.management;
+package reisetech.student.management.data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
