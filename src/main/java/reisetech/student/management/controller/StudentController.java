@@ -41,7 +41,6 @@ public class StudentController {
         model.addAttribute("studentCourseList",
                 converter.getStudentDetails(students, studentCourses));
         return "studentCourseList";
-        //@GetMappingのコードとstudentCourseListファイルのコードの関連。☞model.addAttribute("studentCourseList"が${studentCourseList}"にわたっているのか？リストが空とは
     }
 
     @GetMapping("/newStudent")
@@ -53,15 +52,10 @@ public class StudentController {
     @PostMapping("/registerStudent")
     public String registerStudent(@ModelAttribute StudentDetail studentDetail,
             BindingResult result) {
-            /*
         if (result.hasErrors()) {
             return "registerStudent";
         }
-
-             */
-        service.insertStudent(studentDetail.getStudent());
+        service.registerStudent(studentDetail.getStudent());
         return "redirect:/studentList";
     }
-
-    //AUTOincrement終了。外部キー再度つける。コントローラーでidをなくし、自動連番でDBに入るようにする・studentはそれで官僚なはず
 }
