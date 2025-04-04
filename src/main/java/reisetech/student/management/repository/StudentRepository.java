@@ -19,5 +19,4 @@ public interface StudentRepository {
     @Insert("INSERT INTO students(full_name,kana_name,nickname,email_address,address,age,sex,remark) "
             + "VALUES(#{fullName},#{kanaName},#{nickname},#{emailAddress},#{address},#{age},#{sex},#{remark})")
     int insertStudent(Student student);
-
 }
