@@ -21,12 +21,15 @@ public class StudentService {
         return repository.searchStudent();
     }
 
+
     public List<StudentCourses> searchStudentCoursesList() {
         return repository.searchCourse();
-    }
 
+<<<<<<< Updated upstream
     public int registerStudent(Student student) {
         return repository.insertStudent(student);
+=======
+>>>>>>> Stashed changes
     }
 }
 

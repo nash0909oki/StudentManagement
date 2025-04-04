@@ -4,14 +4,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import reisetech.student.management.controller.converter.StudentConverter;
 import reisetech.student.management.data.Student;
 import reisetech.student.management.data.StudentCourses;
-import reisetech.student.management.domain.StudentDetail;
 import reisetech.student.management.service.StudentService;
 
 @Controller
@@ -42,6 +38,7 @@ public class StudentController {
                 converter.getStudentDetails(students, studentCourses));
         return "studentCourseList";
     }
+<<<<<<< Updated upstream
 
     @GetMapping("/newStudent")
     public String newStudent(Model model) {
@@ -59,3 +56,6 @@ public class StudentController {
         return "redirect:/studentList";
     }
 }
+=======
+}
+>>>>>>> Stashed changes

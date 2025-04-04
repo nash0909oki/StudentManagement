@@ -16,8 +16,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="studentDetail : ${studentCourseList}"
-      th:if="${not #lists.isEmpty(studentDetail.studentCourses)}">
+  <tr th:each="studentDetail : ${studentCourseList}">
     <td th:text="${studentDetail.studentCourses[0].id}">1</td>
     <td th:text="${studentDetail.studentCourses[0].studentId}">1</td>
     <td th:text="${studentDetail.studentCourses[0].courseName}">Java</td>
