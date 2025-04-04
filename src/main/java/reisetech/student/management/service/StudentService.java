@@ -28,5 +28,6 @@ public class StudentService {
     public int insertStudent(Student student) {
         return repository.registerStudent(student);
     }
+
 }
 
