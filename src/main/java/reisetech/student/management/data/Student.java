@@ -13,7 +13,7 @@ public class Student {
     private String nickname;
     private String emailAddress;
     private String address;
-    private int age;
+    private Integer age;
     private String sex;
     private String remark;
     private boolean isDeleted;
