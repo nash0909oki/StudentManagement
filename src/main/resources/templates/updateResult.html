@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>受講生一覧</title>
+  <title>受講生更新後画面</title>
 </head>
 <body>
-<h1>受講生一覧</h1>
+<h1>受講生更新後画面</h1>
 <table border="1">
   <thead>
   <tr>
-    <th>Id</th>
     <th>name</th>
     <th>JapaneseName</th>
     <th>nickname</th>
@@ -18,14 +17,10 @@
     <th>sex</th>
     <th>remark</th>
     <th>courseName</th>
+
   </tr>
   </thead>
   <tbody>
-  <tr th:each="studentDetail : ${studentList}">
-    <td>
-      <a th:href="@{/studentUpdateForm/{id}(id=${studentDetail.student.id})}"
-         th:text="${studentDetail.student.id}">編集</a>
-    </td>
     <td th:text="${studentDetail.student.fullName}">山田太郎</td>
     <td th:text="${studentDetail.student.kanaName}">ヤマダタロウ</td>
     <td th:text="${studentDetail.student.nickname}">タロー</td>
