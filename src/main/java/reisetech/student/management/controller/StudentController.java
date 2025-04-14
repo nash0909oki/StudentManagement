@@ -1,5 +1,6 @@
 package reisetech.student.management.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import reisetech.student.management.controller.converter.StudentConverter;
 import reisetech.student.management.data.Student;
@@ -34,6 +36,29 @@ public class StudentController {
         return "studentList";
     }
 
+    @GetMapping("/studentUpdateForm/{id}")
+    public String showUpdateForm(@PathVariable String id, Model model) {
+        StudentDetail studentDetail = service.findStudent(id);
+        model.addAttribute("studentDetail", studentDetail);
+        return "updateStudent";
+    }
+
+    @PostMapping("/updateStudent")
+    public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+        if (result.hasErrors()) {
+            return "updateStudent";
+        }
+        service.updateStudentDetail(studentDetail);
+        return "redirect:/studentDetail/" + studentDetail.getStudent().getId();
+    }
+
+    @GetMapping("/studentDetail/{id}")
+    public String updateResult(@PathVariable String id, Model model) {
+        StudentDetail studentDetail = service.findStudent(id);
+        model.addAttribute("studentDetail", studentDetail);
+        return "updateResult";
+    }
+
     @GetMapping("/studentCourseList")
     public String getStudentCourseList(Model model) {
         List<Student> students = service.searchStudentList();
@@ -45,7 +70,9 @@ public class StudentController {
 
     @GetMapping("/newStudent")
     public String newStudent(Model model) {
-        model.addAttribute("studentDetail", new StudentDetail());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudentCourses(Arrays.asList(new StudentCourses()));
+        model.addAttribute("studentDetail", studentDetail);
         return "registerStudent";
     }
 
@@ -55,7 +82,7 @@ public class StudentController {
         if (result.hasErrors()) {
             return "registerStudent";
         }
-        service.insertStudent(studentDetail.getStudent());
+        service.insertStudent(studentDetail);
         return "redirect:/studentList";
     }
 }
