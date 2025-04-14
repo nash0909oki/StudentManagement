@@ -32,7 +32,7 @@ public class StudentController {
     public String getStudentList(Model model) {
         List<Student> students = service.searchStudentList();
         List<StudentCourses> studentCourses = service.searchStudentCoursesList();
-        model.addAttribute("studentList", converter.getStudentDetails(students, studentCourses));
+        model.addAttribute("studentDetail", converter.getStudentDetails(students, studentCourses));
         return "studentList";
     }
 
@@ -56,7 +56,7 @@ public class StudentController {
     public String updateResult(@PathVariable String id, Model model) {
         StudentDetail studentDetail = service.findStudent(id);
         model.addAttribute("studentDetail", studentDetail);
-        return "updateResult";
+        return "redirect:/studentList";
     }
 
     @GetMapping("/studentCourseList")
