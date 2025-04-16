@@ -39,6 +39,13 @@ public class StudentService {
         }
     }
 
+    public StudentDetail test(String id) {
+        StudentDetail studentDetail = new StudentDetail();
+        Student student = repository.findStudentById(id);
+        studentDetail.setStudent(student);
+        return studentDetail;
+    }
+
     public StudentDetail findStudent(String id) {
         Student student = repository.findStudentById(id);
         List<StudentCourses> studentCourses = repository.findStudentCoursesById(
