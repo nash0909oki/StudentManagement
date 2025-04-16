@@ -52,6 +52,11 @@
            th:field="*{studentCourses[__${stat.index}__].courseName}"/>
   </div>
   <div>
+    <label for="is_deleted">退会申し込み:</label>
+    <input type="checkbox" id="is_deleted" th:field="*{student.isDeleted}"/>
+    *注　退会を希望の場合のみ、チェックしてください
+  </div>
+  <div>
     <button type="submit">再登録</button>
   </div>
 </form>
