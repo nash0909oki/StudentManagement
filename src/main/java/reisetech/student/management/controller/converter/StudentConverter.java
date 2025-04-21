@@ -7,10 +7,23 @@ import reisetech.student.management.data.Student;
 import reisetech.student.management.data.StudentCourses;
 import reisetech.student.management.domain.StudentDetail;
 
+
 @Component
+
+/**
+ * 受講生と、受講生コース情報を用いて、idが一致する値を返すコンバータークラス
+ */
 public class StudentConverter {
 
-    public List<StudentDetail> getStudentDetails(List<Student> students,
+    /**
+     * 受講生のidと一致する、受講生コース情報を紐づける。 受講生に対して、受講生コース情報は複数存在するので、ループしてコース情報を全て取得する。
+     *
+     * @param students       　受講生一覧
+     * @param studentCourses 　受講生コース情報のリスト
+     * @return
+     */
+
+    public List<StudentDetail> converterStudentDetails(List<Student> students,
             List<StudentCourses> studentCourses) {
         List<StudentDetail> studentDetails = new ArrayList<>();
         for (Student student : students) {

@@ -9,18 +9,45 @@ import org.apache.ibatis.annotations.Update;
 import reisetech.student.management.data.Student;
 import reisetech.student.management.data.StudentCourses;
 
+/**
+ * 受講生テーブルと受講生コース情報テーブルに対してSQLを実行するRepository。
+ */
+
+
 @Mapper
 public interface StudentRepository {
 
+    /**
+     * 論理削除されている受講生以外の受講生の全件検索を行う。
+     *
+     * @return 受講生一覧（論理削除されている受講生以外）
+     */
     @Select("SELECT * FROM students WHERE is_deleted = false")
     List<Student> searchStudent();
 
-    @Select("SELECT * FROM students_courses")
-    List<StudentCourses> searchCoursesList();
-
+    /**
+     * idと一致する単一の受講生を検索する。
+     *
+     * @param id 　受講生ID
+     * @return　単一の受講生
+     */
     @Select("SELECT * FROM students WHERE id = #{id}")
     Student findStudentById(String id);
 
+    /**
+     * 受講生のコース情報の全件検索を行う。
+     *
+     * @return　受講生コース情報の全件
+     */
+    @Select("SELECT * FROM students_courses")
+    List<StudentCourses> searchCoursesList();
+
+    /**
+     * 受講生idと一致する、受講生コース情報を検索する。
+     *
+     * @param studentId 　受講生ID
+     * @return 受講生IDと一致する、受講生コース情報
+     */
     @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
     List<StudentCourses> findStudentCoursesById(String studentId);
 
