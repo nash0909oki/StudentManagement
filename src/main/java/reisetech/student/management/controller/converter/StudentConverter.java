@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import reisetech.student.management.data.Student;
-import reisetech.student.management.data.StudentCourses;
+import reisetech.student.management.data.StudentCourse;
 import reisetech.student.management.domain.StudentDetail;
 
 
@@ -18,25 +18,25 @@ public class StudentConverter {
     /**
      * 受講生のidと一致する、受講生コース情報を紐づける。 受講生に対して、受講生コース情報は複数存在するので、ループしてコース情報を全て取得する。
      *
-     * @param students       　受講生一覧
-     * @param studentCourses 　受講生コース情報のリスト
+     * @param studentList       　受講生一覧
+     * @param studentCourseList 　受講生コース情報のリスト
      * @return
      */
 
-    public List<StudentDetail> converterStudentDetails(List<Student> students,
-            List<StudentCourses> studentCourses) {
+    public List<StudentDetail> converterStudentDetails(List<Student> studentList,
+            List<StudentCourse> studentCourseList) {
         List<StudentDetail> studentDetails = new ArrayList<>();
-        for (Student student : students) {
+        for (Student student : studentList) {
             StudentDetail studentDetail = new StudentDetail();
             studentDetail.setStudent(student);
-            List<StudentCourses> convertStudentCourses = new ArrayList<>();
+            List<StudentCourse> convertStudentCourseList = new ArrayList<>();
 
-            for (StudentCourses studentCourse : studentCourses) {
+            for (StudentCourse studentCourse : studentCourseList) {
                 if (student.getId().equals(studentCourse.getStudentId())) {
-                    convertStudentCourses.add(studentCourse);
+                    convertStudentCourseList.add(studentCourse);
                 }
             }
-            studentDetail.setStudentCourses(convertStudentCourses);
+            studentDetail.setStudentCourseList(convertStudentCourseList);
             studentDetails.add(studentDetail);
         }
         return studentDetails;
