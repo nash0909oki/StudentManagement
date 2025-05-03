@@ -6,9 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,10 +48,12 @@ public class StudentController {
      * @return　単一の受講生詳細
      */
     @GetMapping("/studentDetail/{id}")
-    public StudentDetail getOneStudent(@PathVariable
-    @NotBlank(message = "IDは必須です")
-    @Pattern(regexp = "^[0-9]{1,3}$", message = "IDは1〜3桁の半角数字で入力をしてください")
-    String id) {
+    public StudentDetail getOneStudent(
+            @PathVariable
+            @NotBlank(message = "IDは必須です")
+            @Pattern(regexp = "^[0-9]{1,3}$", message = "IDは1〜3桁の半角数字で入力をしてください")
+            String id) {
+
         return service.findStudent(id);
     }
 
@@ -72,17 +72,6 @@ public class StudentController {
         }
         service.updateStudentDetail(studentDetail);
         return ResponseEntity.ok(studentDetail);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleJsonError(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body("データの形式が不正です（JSON構文の間違いなど）");
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleServerError(Exception ex) {
-        ex.printStackTrace(); // ログ出力
-        return ResponseEntity.status(500).body("サーバーエラーが発生しました");
     }
 
     /**

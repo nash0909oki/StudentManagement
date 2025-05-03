@@ -3,12 +3,18 @@ package reisetech.student.management.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reisetech.student.management.controller.converter.StudentConverter;
 import reisetech.student.management.data.Student;
 import reisetech.student.management.data.StudentCourse;
 import reisetech.student.management.domain.StudentDetail;
+import reisetech.student.management.exception.IdNotFoundException;
+import reisetech.student.management.exception.OneStudentSearchDbException;
+import reisetech.student.management.exception.StudentInsertDbException;
+import reisetech.student.management.exception.StudentSearchDbException;
+import reisetech.student.management.exception.StudentUpdateDbException;
 import reisetech.student.management.repository.StudentRepository;
 
 /**
@@ -33,9 +39,13 @@ public class StudentService {
      */
 
     public List<StudentDetail> searchStudentList() {
-        List<Student> studentList = repository.searchStudent();
-        List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-        return converter.converterStudentDetails(studentList, studentCourseList);
+        try {
+            List<Student> studentList = repository.searchStudent();
+            List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+            return converter.converterStudentDetails(studentList, studentCourseList);
+        } catch (DataAccessException e) {
+            throw new StudentSearchDbException("全件検索のDB接続時にエラー発生", e);
+        }
     }
 
     /**
@@ -47,17 +57,21 @@ public class StudentService {
 
     @Transactional
     public StudentDetail insertStudent(StudentDetail studentDetail) {
-        Student student = studentDetail.getStudent();
+        try {
+            Student student = studentDetail.getStudent();
 
-        //受講生詳細DB登録
-        repository.registerStudent(student);
-        for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-            //初期データ設定メソッドの呼び出し
-            initStudentCourses(studentCourse, student);
-            //受講生コース情報DB登録
-            repository.registerStudentCourse(studentCourse);
+            //受講生詳細DB登録
+            repository.registerStudent(student);
+            for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+                //初期データ設定メソッドの呼び出し
+                initStudentCourses(studentCourse, student);
+                //受講生コース情報DB登録
+                repository.registerStudentCourse(studentCourse);
+            }
+            return studentDetail;
+        } catch (DataAccessException e) {
+            throw new StudentInsertDbException("登録処理のDB接続時にエラー発生", e);
         }
-        return studentDetail;
     }
 
     /**
@@ -82,10 +96,19 @@ public class StudentService {
      * @return　受講生詳細単体の情報
      */
     public StudentDetail findStudent(String id) {
-        Student student = repository.findStudentById(id);
-        List<StudentCourse> studentCourseList = repository.findStudentCourseById(
-                student.getId());
-        return new StudentDetail(student, studentCourseList);
+
+        try {
+            Student student = repository.findStudentById(id);
+            if (student == null || student.getId() == null) {
+                throw new IdNotFoundException("受講生id" + id + "は見つかりません。", id);
+            }
+            List<StudentCourse> studentCourseList = repository.findStudentCourseById(
+                    student.getId());
+
+            return new StudentDetail(student, studentCourseList);
+        } catch (DataAccessException e) {
+            throw new OneStudentSearchDbException("一件の受講生検索のDB接続時にエラー発生", e);
+        }
     }
 
     /**
@@ -96,12 +119,17 @@ public class StudentService {
 
     @Transactional
     public void updateStudentDetail(StudentDetail studentDetail) {
-        repository.updateStudent(studentDetail.getStudent());
-        for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-            repository.updateStudentCourse(studentCourse);
+        try {
+            repository.updateStudent(studentDetail.getStudent());
+            for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+                repository.updateStudentCourse(studentCourse);
+            }
+        } catch (DataAccessException e) {
+            throw new StudentUpdateDbException("更新処理のDB接続時にエラー発生", e);
         }
     }
 }
+
 
 
 

@@ -11,9 +11,13 @@ import lombok.Setter;
 public class StudentCourse {
 
     private String id;
+
     private String studentId;
+
     @NotBlank(message = "コース名は必須です")
     private String courseName;
+
     private LocalDateTime startDate;
+
     private LocalDateTime endDate;
 }

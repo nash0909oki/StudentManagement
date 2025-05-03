@@ -1,6 +1,7 @@
 package reisetech.student.management.domain;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,10 @@ import reisetech.student.management.data.StudentCourse;
 public class StudentDetail {
 
     @Valid
+    @NotNull(message = "受講生情報は必須です")
     private Student student;
+
     @Valid
+    @NotNull(message = "受講生コース情報は必須です")
     private List<StudentCourse> studentCourseList;
 }
