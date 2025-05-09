@@ -12,5 +12,8 @@ public class Application {
         System.setOut(new PrintStream(System.out, true, "UTF-8"));
         System.setErr(new PrintStream(System.err, true, "UTF-8"));
         SpringApplication.run(Application.class, args);
+
     }
+
+
 }
