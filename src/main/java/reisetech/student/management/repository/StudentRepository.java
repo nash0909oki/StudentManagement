@@ -64,7 +64,7 @@ public interface StudentRepository {
      *
      * @param student 　受講生
      */
-    void updateStudent(Student student);
+    int updateStudent(Student student);
 
     /**
      * 受講生コース情報のコース名更新

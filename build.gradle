@@ -25,23 +25,37 @@ repositories {
 }
 
 dependencies {
+
+    //Spring Bootのウェブアプリケーション
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    //3.17.0が最新。
-    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+    //Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    //Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     //MySQLドライバ
     runtimeOnly 'com.mysql:mysql-connector-j'
+
     //MyBatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
 
-    //入力チェック
+    //入力バリデーション
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // APIドキュメント（Swagger UI）をブラウザで自動表示するためのライブラリ
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+
+    //ユーティリティライブラリ
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
