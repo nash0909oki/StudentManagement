@@ -3,7 +3,6 @@ package reisetech.student.management.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reisetech.student.management.controller.converter.StudentConverter;
@@ -11,10 +10,6 @@ import reisetech.student.management.data.Student;
 import reisetech.student.management.data.StudentCourse;
 import reisetech.student.management.domain.StudentDetail;
 import reisetech.student.management.exception.IdNotFoundException;
-import reisetech.student.management.exception.OneStudentSearchDbException;
-import reisetech.student.management.exception.StudentInsertDbException;
-import reisetech.student.management.exception.StudentSearchDbException;
-import reisetech.student.management.exception.StudentUpdateDbException;
 import reisetech.student.management.repository.StudentRepository;
 
 /**
@@ -39,12 +34,52 @@ public class StudentService {
      */
 
     public List<StudentDetail> searchStudentList() {
-        try {
-            List<Student> studentList = repository.searchStudent();
-            List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-            return converter.converterStudentDetails(studentList, studentCourseList);
-        } catch (DataAccessException e) {
-            throw new StudentSearchDbException("全件検索のDB接続時にエラー発生", e);
+
+        List<Student> studentList = repository.searchStudent();
+        List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+        return converter.converterStudentDetails(studentList, studentCourseList);
+    }
+
+    /**
+     * 一人の受講生詳細検索。idに紐づく任意の受講生情報を取得する。
+     * その後、student_coursesテーブルから、その受講生詳細のidと一致する受講生コース情報（コース名、受講開始日など）を取得する
+     *
+     * @param id 　受講生ID
+     * @return　受講生詳細単体の情報
+     */
+    public StudentDetail findStudent(String id) {
+
+        Student student = repository.findStudentById(id);
+        if (student == null || student.getId() == null) {
+            throw new IdNotFoundException("受講生id" + id + "は見つかりません。", id);
+        }
+        List<StudentCourse> studentCourseList = repository.findStudentCourseById(
+                student.getId());
+
+        return new StudentDetail(student, studentCourseList);
+    }
+
+    /**
+     * 受講生と受講生コース情報更新。受講生は一件、受講生コース情報は、リクエストのコース名の件数分更新
+     *
+     * @param studentDetail 　受講生詳細
+     */
+
+    @Transactional
+    public void updateStudentDetail(StudentDetail studentDetail) {
+
+        if (studentDetail.getStudent().getId() == null) {
+            throw new IllegalArgumentException(
+                    "IDが指定されていないため、更新できません");
+        }
+        Student student = studentDetail.getStudent();
+        int updateCount = repository.updateStudent(student);
+        if (updateCount == 0) {
+            throw new IdNotFoundException("指定されたidは存在しないため、更新できません",
+                    student.getId());
+        }
+        for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+            repository.updateStudentCourse(studentCourse);
         }
     }
 
@@ -57,21 +92,22 @@ public class StudentService {
 
     @Transactional
     public StudentDetail insertStudent(StudentDetail studentDetail) {
-        try {
-            Student student = studentDetail.getStudent();
 
-            //受講生詳細DB登録
-            repository.registerStudent(student);
-            for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-                //初期データ設定メソッドの呼び出し
-                initStudentCourses(studentCourse, student);
-                //受講生コース情報DB登録
-                repository.registerStudentCourse(studentCourse);
-            }
-            return studentDetail;
-        } catch (DataAccessException e) {
-            throw new StudentInsertDbException("登録処理のDB接続時にエラー発生", e);
+        Student student = studentDetail.getStudent();
+        //リクストでidが送られてきた場合、例外をスロー
+        if (student.getId() != null) {
+            throw new IllegalArgumentException("idは含めないでください");
         }
+
+        //受講生詳細DB登録
+        repository.registerStudent(student);
+        for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+            //初期データ設定メソッドの呼び出し
+            initStudentCourses(studentCourse, student);
+            //受講生コース情報DB登録
+            repository.registerStudentCourse(studentCourse);
+        }
+        return studentDetail;
     }
 
     /**
@@ -86,47 +122,6 @@ public class StudentService {
         studentCourse.setStudentId(student.getId());
         studentCourse.setStartDate(now);
         studentCourse.setEndDate(now.plusYears(1));
-    }
-
-    /**
-     * 一人の受講生詳細検索。idに紐づく任意の受講生情報を取得する。
-     * その後、student_coursesテーブルから、その受講生詳細のidと一致する受講生コース情報（コース名、受講開始日など）を取得する
-     *
-     * @param id 　受講生ID
-     * @return　受講生詳細単体の情報
-     */
-    public StudentDetail findStudent(String id) {
-
-        try {
-            Student student = repository.findStudentById(id);
-            if (student == null || student.getId() == null) {
-                throw new IdNotFoundException("受講生id" + id + "は見つかりません。", id);
-            }
-            List<StudentCourse> studentCourseList = repository.findStudentCourseById(
-                    student.getId());
-
-            return new StudentDetail(student, studentCourseList);
-        } catch (DataAccessException e) {
-            throw new OneStudentSearchDbException("一件の受講生検索のDB接続時にエラー発生", e);
-        }
-    }
-
-    /**
-     * 受講生と受講生コース情報更新。受講生は一件、受講生コース情報は、リクエストのコース名の件数分更新
-     *
-     * @param studentDetail 　受講生詳細
-     */
-
-    @Transactional
-    public void updateStudentDetail(StudentDetail studentDetail) {
-        try {
-            repository.updateStudent(studentDetail.getStudent());
-            for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-                repository.updateStudentCourse(studentCourse);
-            }
-        } catch (DataAccessException e) {
-            throw new StudentUpdateDbException("更新処理のDB接続時にエラー発生", e);
-        }
     }
 }
 
