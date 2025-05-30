@@ -20,28 +20,27 @@
 - Swaggerを用いたAPI仕様確認
 
 ## DB構造
-  students（親テーブル）　                      
-+---------------------------                      
-| id (PK,AUTO_INCREMENT)   |  
-| full_name(NOT NULL)      |               
-| kana_name(NOT NULL)      |                  
-| nickname                 |                  
-| email_address (NOT NULL) |                  
-| address                  |                  
-| age                      |
-| sex                      |
-| remark                   |
-| is_deleted (DEFAULT 0)   |
-+--------------------------+
+
+  students(親テーブル）
+------------------------ 
+・ id (PK,AUTO_INCREMENT)   
+・ full_name(NOT NULL)                     
+・kana_name(NOT NULL)                        
+・nickname                                   
+・email_address (NOT NULL)                   
+・address                                    
+・age                      
+・sex                      
+・remark                   
+・is_deleted (DEFAULT 0)  
 
  students_courses（子テーブル）
 +------------------------                  
-| id (PK)               |
-| student_id (FK        |
-| course_name(NOT NULL) |
-| start_date            |
-| end_date              |
-+-----------------------+
+・ id (PK)               
+・student_id (FK)       
+・course_name(NOT NULL) 
+・start_date            
+・end_date              
 
 - students_coursesテーブルのstudent_id は students.id を参照（外部キー）
 - ON DELETE CASCADE により、親レコード削除時に子レコードも連動して削除される。
