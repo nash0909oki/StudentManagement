@@ -21,8 +21,8 @@
 
 ## DB構造
 
-  students(親テーブル）
------------------------- 
+students(親テーブル）
+
 ・ id (PK,AUTO_INCREMENT)   
 ・ full_name(NOT NULL)                     
 ・kana_name(NOT NULL)                        
@@ -35,7 +35,7 @@
 ・is_deleted (DEFAULT 0)  
 
  students_courses（子テーブル）
-+------------------------                  
+               
 ・ id (PK)               
 ・student_id (FK)       
 ・course_name(NOT NULL) 
