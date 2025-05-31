@@ -1,7 +1,15 @@
+
+https://github.com/user-attachments/assets/edcfa7cf-13c2-442e-9f43-ebeb7df7aea5
 # Student Management System
 
 ## 概要
 本プロジェクトは、受講生とその受講コース情報を一元管理するためのWebアプリケーションです。管理者が受講生の基本情報およびコース履歴を登録・閲覧・更新・削除できるように設計されています。
+
+## 動画
+実際に動作している動画は以下になります。ぜひご覧ください。
+
+https://github.com/user-attachments/assets/114d2343-6fba-4277-a61c-b59ae26218b1
+
 
 ## 仕様技術
 - 言語: Java
