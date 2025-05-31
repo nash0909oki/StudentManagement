@@ -1,5 +1,4 @@
 
-https://github.com/user-attachments/assets/edcfa7cf-13c2-442e-9f43-ebeb7df7aea5
 # Student Management System
 
 ## 概要
