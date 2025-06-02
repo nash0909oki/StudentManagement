@@ -50,10 +50,10 @@ students(親テーブル）
 ・start_date            
 ・end_date              
 
-- students_coursesテーブルのstudent_id は students.id を参照（外部キー）
+- students_coursesテーブルのstudent_id は studentsテーブルのid を参照（外部キー）
 - ON DELETE CASCADE により、親レコード削除時に子レコードも連動して削除される。
-- is_deleted は論理削除用フラグ（0: 有効、1: 削除済み）
-- start_date, end_date は TIMESTAMP 型（NULL許容）
+- is_deleted は論理削除用フラグ（0: 有効、1: 削除済み、デフォルトは0）
+- start_date, end_date は TIMESTAMP 型
 
 ## 設計方針
 - **三層アーキテクチャの採用**  
