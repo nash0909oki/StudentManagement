@@ -47,7 +47,7 @@ students(親テーブル）
 ・id (PK)               
 ・student_id (FK)       
 ・course_name(not_null)
-・start_date         
+・start_date
 ・end_date              
 
 - students_coursesテーブルのstudent_id は studentsテーブルのid を参照（外部キー）
