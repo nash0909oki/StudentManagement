@@ -46,7 +46,8 @@ students(親テーブル）
                
 ・id (PK)               
 ・student_id (FK)       
-・course_name(NOT NULL)　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+・course_name(NOT NULL)
+
 ・start_date         
 ・end_date              
 
