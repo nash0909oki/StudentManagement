@@ -31,8 +31,8 @@ https://github.com/user-attachments/assets/114d2343-6fba-4277-a61c-b59ae26218b1
 
 students(親テーブル）
 
-・ id (PK,AUTO_INCREMENT)   
-・ full_name(NOT NULL)                     
+・id (PK,AUTO_INCREMENT)   
+・full_name(NOT NULL)                     
 ・kana_name(NOT NULL)                        
 ・nickname                                   
 ・email_address (NOT NULL)                   
